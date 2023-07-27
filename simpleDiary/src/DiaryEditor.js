@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
 
-const DiaryEditor = () => {
+// onCreate 함수를 App 컴포넌트로부터 props로 전달받음
+// handleSubmit을 통해 저장이 일어났을 때 onCreate를 호출
+// 현재 컴포넌트가 가지고 있는 데이터 요소들을 App 컴포넌트의 onCreate 함수 쪽으로 전달해줌
+const DiaryEditor = ({ onCreate }) => {
 
     // react.mutableobject가 저장됨. html 돔 요소를 접근할 수 있는 역할
     // authorInput이라는 레퍼런스 객체를 통해서 input 태그에 접근할 수 있게 됨
@@ -40,7 +43,17 @@ const DiaryEditor = () => {
             contentInput.current.focus();
             return;
         }
+
+        // 입력 데이터 전달
+        onCreate(state.author, state.content, state.emotion);
         alert('성공');
+        // 일기 데이터들은 DiaryEditor의 state에 매핑되어 있기 때문에, 저장이 되면 setState를 통해서
+        // 일기 아이템 포맷을 초기화해줌 (폼 초기화)
+        setState({
+            author: "",
+            content: "",
+            emotion: 1,
+        })
     };
 
 

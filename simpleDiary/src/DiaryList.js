@@ -4,14 +4,15 @@
 import DiaryItem from "./DiaryItem";
 
 // jsx 표현 -> {it.author} (객체의 점 표기법으로 객체의 프로퍼티에 접근 가능)
-const DiaryList = ({ diaryList }) => {
+const DiaryList = ({ onDelete, diaryList }) => {
     console.log(diaryList);
     return <div className="DiaryList">
         <h2>일기 리스트</h2>
         <h4>{diaryList.length}개의 일기</h4>
         <div>
             {diaryList.map((it)=>(
-                <DiaryItem key={it.id} {...it}/>
+                // props 드릴링
+                <DiaryItem key={it.id} {...it} onDelete={onDelete}/>
             ))}
         </div>
     </div>
@@ -25,7 +26,6 @@ const DiaryList = ({ diaryList }) => {
 DiaryList.defaultProps={
     diaryList: []
 }
-
 
 // es 모듈시스템에 내보내기
 export default DiaryList;
