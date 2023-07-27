@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const DiaryEditor = () => {
+
+    // react.mutableobject가 저장됨. html 돔 요소를 접근할 수 있는 역할
+    // authorInput이라는 레퍼런스 객체를 통해서 input 태그에 접근할 수 있게 됨
+    const authorInput = useRef();
+    const contentInput = useRef();
 
     const [state, setState] = useState({
         author:"",
@@ -22,8 +27,20 @@ const DiaryEditor = () => {
     };
 
     const handleSubmit = (e) => {
-        console.log(state);
-        alert('성공')
+        if (state.author.length < 1) {
+            // alert('최소 1글자 이상 입력');
+            authorInput.current.focus();
+            // Dom 요소를 선택하는 useRef 기능을 통해 생성한 레퍼런스 객체는 현재 객체를
+            // current라는 프로퍼티를 통해서 authorInput.current는 authorInput 태그가 되고 focus 함수를 이용할 수 있음
+            return;
+        }
+
+        if (state.content.length < 5) {
+            // alert('최소 5글자 이상 입력');
+            contentInput.current.focus();
+            return;
+        }
+        alert('성공');
     };
 
 
@@ -38,7 +55,9 @@ const DiaryEditor = () => {
         <h2>오늘의 일기</h2>
         <div>
             <input 
+            ref={authorInput}
             name="author"
+            type="text"
             value={state.author}
             //  onChange={(e) => {
                 // setAuthor(e.target.value)
@@ -57,6 +76,7 @@ const DiaryEditor = () => {
         </div>
         <div>
             <textarea
+            ref={contentInput}
             name='content'
             value={state.content}
             //  onChange={(e) => {
