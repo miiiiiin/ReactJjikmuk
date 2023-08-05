@@ -2,6 +2,10 @@ import { useRef, useState } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
+import Lifecycle from './LifeCycle';
+
+// dummy json data
+// https://jsonplaceholder.typicode.com/comments
 
 // const dummyList = [
   // {
@@ -36,6 +40,14 @@ function App() {
   // dataId.current는 어떤 dom도 선택하지 않고 그냥 0이라는 값을 가리킴
   const dataId = useRef(0);
 
+  // js api or 내장객체인 fetch 이용
+  // await 키워드와 같이 이용할 것이기 때문에 async 사용
+  // getData함수가 promise를 반환하는 비동기 함수로 만들어줌  
+  const getData = async () => {
+    const res = await fetch('https://jsonplaceholder.typicode.com/comments').then((res)=>res.json());
+    console.log(res);
+  }
+
   // DiaryEditor에 props로 전달
   // 각 입력요소들을 파라미터로 받아 이 함수가 받아서 setData를 이용해서 data를 업데이트 시키는 로직
   const onCreate = (author, content, emotion) => {
@@ -52,7 +64,7 @@ function App() {
     setData([newItem, ...data])
   };
 
-  const onDelete = (targetId) => {
+  const onRemove = (targetId) => {
     console.log(targetId);
     console.log(`${targetId}가 삭제되었습니다`);
     // 삭제된 id를 가진 배열요소를 제외한 새로운 배열을 만들어 setData 함수에 전달
@@ -60,11 +72,21 @@ function App() {
     setData(newDiaryList);
   };
 
+  const onEdit = (targetId, newContent) => {
+    console.log(newContent);
+    console.log(targetId);
+    setData(
+      // 원본 데이터를 불러온 다음, content를 업데이트
+      data.map((it) => it.id === targetId ? {...it, content: newContent} : it)
+    );
+  };
+
   // data로 props를 전달
   return (
     <div className="App">
+    <Lifecycle/>
     <DiaryEditor onCreate={onCreate}/>
-    <DiaryList onDelete={onDelete}
+    <DiaryList onEdit={onEdit} onRemove={onRemove} 
       diaryList={data}/>
     </div>
   );

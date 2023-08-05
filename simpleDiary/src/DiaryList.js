@@ -4,7 +4,7 @@
 import DiaryItem from "./DiaryItem";
 
 // jsx 표현 -> {it.author} (객체의 점 표기법으로 객체의 프로퍼티에 접근 가능)
-const DiaryList = ({ onDelete, diaryList }) => {
+const DiaryList = ({ onEdit, onRemove, diaryList }) => {
     console.log(diaryList);
     return <div className="DiaryList">
         <h2>일기 리스트</h2>
@@ -12,7 +12,7 @@ const DiaryList = ({ onDelete, diaryList }) => {
         <div>
             {diaryList.map((it)=>(
                 // props 드릴링
-                <DiaryItem key={it.id} {...it} onDelete={onDelete}/>
+                <DiaryItem key={it.id} {...it} onEdit={onEdit} onRemove={onRemove}/>
             ))}
         </div>
     </div>
